@@ -1,0 +1,55 @@
+name: Slither Analysis
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+  workflow_dispatch:
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
+
+    env:
+      FORGE_VERSION: 'v1.0.0'
+      PYTHON_VERSION: '3.10'
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install Slither
+        run: pip install slither-analyzer
+
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: ${{ env.FORGE_VERSION }}
+
+      - name: Run Slither
+        continue-on-error: true
+        run: |
+          slither . --sarif results.sarif || true
+
+      - name: Check results.sarif presence
+        id: sarif_check
+        run: |
+          if [ -s results.sarif ]; then
+            echo "present=true" >> $GITHUB_OUTPUT
+          else
+            echo "present=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Upload SARIF file
+        if: steps.sarif_check.outputs.present == 'true'
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: results.sarif
