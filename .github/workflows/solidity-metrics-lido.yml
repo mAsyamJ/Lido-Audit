@@ -1,4 +1,4 @@
-name: Solidity Metrics (Multi-Contract)
+name: Solidity Metrics (Dual-Governance Only)
 
 on: 
   push:
@@ -20,18 +20,17 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Run Solidity Metrics on all contracts
+      - name: Run Solidity Metrics only on dual-governance
         uses: tintinweb/solidity-metrics-action@v1
         with:
           target: 'dual-governance/contracts/**/*.sol'
-          args: '--output metrics.html'
+          args: '--output dual-governance/metrics.html'
 
       - name: Check result
-        working-directory: dual-governance
-        run: ls -lah && head -n 30 metrics.html || echo "No HTML generated"
+        run: ls -lah dual-governance && head -n 30 dual-governance/metrics.html || echo "No HTML generated"
 
       - name: Upload metrics report
         uses: actions/upload-artifact@v4
         with:
-          name: solidity-metrics-report
+          name: solidity-metrics-dual-governance
           path: dual-governance/metrics.html
