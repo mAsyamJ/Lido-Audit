@@ -1,0 +1,15 @@
+{
+  "deploymentTimestamp": 1744635256,
+  "factoryAddress": "0xE7dA792bBB1c09118f0079Db3c42EbEB02FB8af1",
+  "initialGovernor": "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589",
+  "isDryRun": false,
+  "market-pweeth": "0xB9879123b74138bfFD7D1679A8219EF14baFA5C5",
+  "market-pweth": "0xD2D86fbDCE30Ee87e05BF5F65dB1956832E61bb5",
+  "market-pwethwsteth": "0xEB47bF35477Bdd84e1B565bba58c8914753817D3",
+  "market-pwsteth": "0x0e024B2F2455674a55e14300A60066F95FE8EF7f",
+  "market-pwstethweeth": "0x71108C944fFfb90dFD58c5EA507EdEf852a06efB",
+  "oracleEngine": "0x09E96F4cA0630153f0968F49140AfB4F859Ee550",
+  "protocolId": 2,
+  "riskEngine": "0x9cA50f2bc08EbE069AB525FAa527456581667Cd4",
+  "timelock": "0x455ccd11913B778C570bf8cbFa0ba6029f950f5e"
+}

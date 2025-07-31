@@ -1,0 +1,109 @@
+{
+  "protocol-info": {
+    "initialGovernor": "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589",
+    "ownerShareMantissa": "0",
+    "configuratorShareMantissa": "0"
+  },
+  "market-usdc": {
+    "name": "Pike USDC",
+    "symbol": "pUSDC",
+    "baseToken": "0xaBF4b70C67cf74Bd161E178CF1Fa0bb1EB5daC94",
+    "decimals": 8,
+    "initialExchangeRateMantissa": "1000000000000000000",
+    "reserveFactorMantissa": "10000000000000000",
+    "protocolSeizeShareMantissa": "20000000000000000",
+    "borrowRateMaxMantissa": "1000000000000000000",
+    "collateralFactorMantissa": "725000000000000000",
+    "liquidationThresholdMantissa": "825000000000000000",
+    "liquidationIncentiveMantissa": "1020000000000000000",
+    "closeFactor": "500000000000000000",
+    "supplyCap": "1000000000000000000",
+    "borrowCap": "1000000000000000000",
+    "baseRatePerYear": "0",
+    "multiplierPerYear": "0",
+    "firstJumpMultiplierPerYear": "61111110000000000",
+    "secondJumpMultiplierPerYear": "6000000000000000000",
+    "firstKink": "50000000000000000",
+    "secondKink": "950000000000000000",
+    "mainProvider": "0xF31523bc84862F8fdA61a635719786b4dD4FA4F8",
+    "fallbackProvider": "0x0000000000000000000000000000000000000000"
+  },
+  "market-weth": {
+    "name": "Pike WETH",
+    "symbol": "pWETH",
+    "baseToken": "0xfB8A3bc49a5DFFC2Ee1163D53D425e6585727431",
+    "decimals": 8,
+    "initialExchangeRateMantissa": "1000000000000000000",
+    "reserveFactorMantissa": "10000000000000000",
+    "protocolSeizeShareMantissa": "20000000000000000",
+    "borrowRateMaxMantissa": "1000000000000000000",
+    "collateralFactorMantissa": "725000000000000000",
+    "liquidationThresholdMantissa": "825000000000000000",
+    "liquidationIncentiveMantissa": "1020000000000000000",
+    "closeFactor": "500000000000000000",
+    "supplyCap": "100000000000000000000",
+    "borrowCap": "100000000000000000000",
+    "baseRatePerYear": "0",
+    "multiplierPerYear": "0",
+    "firstJumpMultiplierPerYear": "61111110000000000",
+    "secondJumpMultiplierPerYear": "6000000000000000000",
+    "firstKink": "50000000000000000",
+    "secondKink": "950000000000000000",
+    "mainProvider": "0xF31523bc84862F8fdA61a635719786b4dD4FA4F8",
+    "fallbackProvider": "0x0000000000000000000000000000000000000000"
+  },
+  "market-wsteth": {
+    "name": "Pike wstETH",
+    "symbol": "pWSTETH",
+    "baseToken": "0x3E7A8381D312E733A63Bf8C792dBe4Cf42e2b0D3",
+    "decimals": 8,
+    "initialExchangeRateMantissa": "1000000000000000000",
+    "reserveFactorMantissa": "10000000000000000",
+    "protocolSeizeShareMantissa": "20000000000000000",
+    "borrowRateMaxMantissa": "1000000000000000000",
+    "collateralFactorMantissa": "750000000000000000",
+    "liquidationThresholdMantissa": "850000000000000000",
+    "liquidationIncentiveMantissa": "1020000000000000000",
+    "closeFactor": "500000000000000000",
+    "supplyCap": "100000000000000000000",
+    "borrowCap": "100000000000000000000",
+    "baseRatePerYear": "0",
+    "multiplierPerYear": "0",
+    "firstJumpMultiplierPerYear": "61111110000000000",
+    "secondJumpMultiplierPerYear": "6000000000000000000",
+    "firstKink": "50000000000000000",
+    "secondKink": "950000000000000000",
+    "mainProvider": "0xF31523bc84862F8fdA61a635719786b4dD4FA4F8",
+    "fallbackProvider": "0x0000000000000000000000000000000000000000"
+  },
+  "emode-1": {
+    "categoryId": 1,
+    "ptokens": [
+      "0x62631439dc5469c1836d58f99A523B2A5596c568",
+      "0xc0Eab35d15DDA6d9329548305063aD459b806E44",
+      "0xc7EAD26799a4F9dfdd32b18B3D154e27d68f7c5B"
+    ],
+    "collateralPermissions": [false, true, true],
+    "borrowPermissions": [false, true, true],
+    "riskConfig": {
+      "collateralFactorMantissa": "950000000000000000",
+      "liquidationThresholdMantissa": "975000000000000000",
+      "liquidationIncentiveMantissa": "1020000000000000000"
+    }
+  },
+  "emode-2": {
+    "categoryId": 2,
+    "ptokens": [
+      "0x62631439dc5469c1836d58f99A523B2A5596c568",
+      "0xc0Eab35d15DDA6d9329548305063aD459b806E44",
+      "0xc7EAD26799a4F9dfdd32b18B3D154e27d68f7c5B"
+    ],
+    "collateralPermissions": [true, false, false],
+    "borrowPermissions": [false, true, false],
+    "riskConfig": {
+      "collateralFactorMantissa": "900000000000000000",
+      "liquidationThresholdMantissa": "930000000000000000",
+      "liquidationIncentiveMantissa": "1020000000000000000"
+    }
+  }
+}

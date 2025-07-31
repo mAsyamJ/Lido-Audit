@@ -1,0 +1,26 @@
+name: Solidity Metrics (Multi-Contract)
+
+on: push
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Run Solidity Metrics on all contracts
+        uses: tintinweb/solidity-metrics-action@v1
+        with:
+          target: 'src/**/*.sol'
+          args: '--output /github/workspace/__metrics.html'
+
+      - name: Check result
+        run: ls -lah && head -n 30 __metrics.html || echo "No HTML generated"
+
+      - name: Upload metrics report
+        uses: actions/upload-artifact@v4
+        with:
+          name: solidity-metrics-report
+          path: __metrics.html

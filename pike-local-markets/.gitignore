@@ -1,0 +1,31 @@
+# Compiler files
+cache/
+out/
+logs/
+# Ignores development broadcast logs
+# !/broadcast
+# /broadcast/*/31337/
+# /broadcast/*/84532/
+# /broadcast/**/dry-run/
+
+/broadcast
+
+node_modules
+
+certora
+
+# Docs
+docs/
+
+# Dotenv file
+.env
+
+.DS_Store
+
+!deployments/
+!deployments/*/
+!deployments/*/*/
+deployments/*/*/dry-run/
+
+coverage
+lcov.info

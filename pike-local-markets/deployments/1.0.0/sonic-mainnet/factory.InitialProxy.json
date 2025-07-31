@@ -1,0 +1,83 @@
+{
+  "address": "0xa4B531caCad36bea35AE59d3ffa56027Ec339CaB",
+  "abi": [
+    {
+      "type": "constructor",
+      "inputs": [
+        {
+          "name": "implementation",
+          "type": "address",
+          "internalType": "address"
+        },
+        {
+          "name": "_data",
+          "type": "bytes",
+          "internalType": "bytes"
+        }
+      ],
+      "stateMutability": "payable"
+    },
+    {
+      "type": "fallback",
+      "stateMutability": "payable"
+    },
+    {
+      "type": "event",
+      "name": "Upgraded",
+      "inputs": [
+        {
+          "name": "implementation",
+          "type": "address",
+          "indexed": true,
+          "internalType": "address"
+        }
+      ],
+      "anonymous": false
+    },
+    {
+      "type": "error",
+      "name": "AddressEmptyCode",
+      "inputs": [
+        {
+          "name": "target",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "ERC1967InvalidImplementation",
+      "inputs": [
+        {
+          "name": "implementation",
+          "type": "address",
+          "internalType": "address"
+        }
+      ]
+    },
+    {
+      "type": "error",
+      "name": "ERC1967NonPayable",
+      "inputs": []
+    },
+    {
+      "type": "error",
+      "name": "FailedInnerCall",
+      "inputs": []
+    }
+  ],
+  "constructorArgs": [
+    "0xA13a352bbD90C65a07bA1a03a28Dd3957a81dD16",
+    "0x"
+  ],
+  "linkedLibraries": {},
+  "deployTxnHash": "0x74a96ab573e2db0b49f3795d07b8d8101dc0543997c4b098ad9fc8632cb34d8f",
+  "deployTxnBlockNumber": "24796862",
+  "deployTimestamp": "1746548254",
+  "sourceName": "node_modules/@openzeppelin/contracts/proxy/ERC1967/ERC1967Proxy.sol",
+  "contractName": "ERC1967Proxy",
+  "deployedOn": "deploy.InitialProxy",
+  "gasUsed": 132363,
+  "gasCost": "81167329066"
+}

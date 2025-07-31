@@ -1,0 +1,44 @@
+name = "pike-upgradeable-proxy"
+version = "0.1.0"
+preset = "oz"
+description = "Universal Proxy using OpenZeppelin UUPS contracts"
+
+[var.implementation]
+implementation = "<%= contracts.UUPSUpgradeableMock.address %>"
+
+[var.owner]
+owner = "0x8da29648bd3bbef6f0cc1C0b3a9a286ED14E2963"
+
+[var.abi]
+abi = "<%= JSON.stringify(contracts.UUPSUpgradeableMock.abi) %>"
+
+[var.salt]
+salt = "oz"
+
+[var.initialCallData]
+initialCallData = "0x"
+
+[deploy.UUPSUpgradeableMock]
+artifact = "UUPSUpgradeableMock"
+
+[deploy.InitialProxy]
+artifact = "ERC1967Proxy"
+args = [
+  "<%= contracts.UUPSUpgradeableMock.address %>",
+  "0x"
+]
+salt = "<%= settings.salt %>"
+create2 = true
+
+[invoke.upgrade_proxy_implementation]
+target = [ "InitialProxy" ]
+from = "<%= settings.owner %>"
+abi = "UUPSUpgradeableMock"
+func = "upgradeToAndCall"
+args = [ "<%= settings.implementation %>", "<%= settings.initialCallData %>" ]
+
+[invoke.upgrade_proxy_implementation.factory.Proxy]
+abi = "<%= settings.abi %>"
+event = "Upgraded2"
+arg = 0
+highlight = true

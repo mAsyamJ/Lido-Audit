@@ -1,0 +1,105 @@
+name: CI
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ${{github.workflow}}-${{github.ref}}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    name: Run Linters
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'early-stage') }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up environment
+        uses: ./.github/setup
+
+      - name: Lint sources
+        run: yarn lint:check
+
+  test:
+    name: Run Tests
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'early-stage') }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up environment
+        uses: ./.github/setup
+
+      - name: "Generate a fuzz seed that changes weekly to avoid burning through RPC allowance"
+        id: fuzz_seed
+        run: >
+          echo "FOUNDRY_FUZZ_SEED=$(
+            echo $(($EPOCHSECONDS - $EPOCHSECONDS % 604800))
+          )" >> $GITHUB_OUTPUT
+
+      - name: Run Forge build
+        run: |
+          forge --version
+          forge build --sizes
+        id: build
+
+      - name: Run Forge tests
+        run: |
+          yarn test
+        id: test
+  coverage:
+    name: Coverage Badge
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'early-stage') }}
+
+    env:
+      GIST_SECRET: ${{ secrets.GIST_SECRET }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up environment
+        uses: ./.github/setup
+
+      - name: Extract coverage value
+        id: extract_coverage
+        run: |
+          coverage_output=$(forge coverage --match-contract Local -vv --no-match-coverage "(script|test|node_modules)")
+          line_coverage=$(echo "$coverage_output" | awk '/^\| Total/ {print $4}')
+          echo "value=${line_coverage}" >> $GITHUB_OUTPUT
+
+      - name: Update code coverage badge JSON gist
+        uses: schneegans/dynamic-badges-action@v1.7.0
+        with:
+          auth: ${{ env.GIST_SECRET }}
+          gistID: 76be8eb437f8ba3a2f6b2ee5b7de9eb9
+          filename: Pike_local_market_line_coverage.json
+          label: Line Coverage
+          message: ${{ steps.extract_coverage.outputs.value }}
+          namedLogo: jest
+          color: green
+          logoColor: lightblue
+  slither:
+    name: Static Analyser
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.pull_request.labels.*.name, 'early-stage') }}
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up environment
+        uses: ./.github/setup
+
+      - uses: crytic/slither-action@v0.4.0
+        with:
+          fail-on: config

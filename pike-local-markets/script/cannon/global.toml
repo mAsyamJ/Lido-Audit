@@ -1,0 +1,60 @@
+name = "pike-markets"
+version = "1.0.0"
+preset = "main"
+description = "Factory based deployment"
+
+[var.roles]
+roles_confRole = "0x434f4e464947555241544f520000000000000000000000000000000000000000"
+roles_supGuardRole = "0x535550504c595f4341505f475541524449414e00000000000000000000000000"
+roles_borGuardRole = "0x424f52524f575f4341505f475541524449414e00000000000000000000000000"
+roles_protocol_owner= "0x50524f544f434f4c5f4f574e4552000000000000000000000000000000000000"
+roles_pauseGuardRole = "0x50415553455f475541524449414e000000000000000000000000000000000000"
+roles_reserveManagerRole = "0x524553455256455f4d414e414745520000000000000000000000000000000000"
+roles_reserveWithdrawerRole = "0x524553455256455f574954484452415745520000000000000000000000000000"
+
+[contract.InitialModuleBeacon]
+artifact = "InitialModuleBeacon"
+from = "<%= settings.deployer %>"
+
+[contract.DoubleJumpRateModel]
+artifact = "DoubleJumpRateModel"
+from = "<%= settings.deployer %>"
+
+[contract.RBACModule]
+artifact = "RBACModule"
+from = "<%= settings.deployer %>"
+
+[contract.PTokenModule]
+artifact = "PTokenModule"
+from = "<%= settings.deployer %>"
+
+[contract.RiskEngineModule]
+artifact = "RiskEngineModule"
+from = "<%= settings.deployer %>"
+
+[contract.OracleEngine]
+artifact = "OracleEngine"
+from = "<%= settings.deployer %>"
+
+[contract.Timelock]
+artifact = "Timelock"
+from = "<%= settings.deployer %>"
+
+#PToken
+[router.PTokenRouter]
+contracts = [
+    "InitialModuleBeacon",
+    "DoubleJumpRateModel",
+    "RBACModule",
+    "PTokenModule",
+]
+from = "<%= settings.deployer %>"
+
+#RiskEngine
+[router.RiskEngineRouter]
+contracts = [
+    "InitialModuleBeacon",
+    "RBACModule",
+    "RiskEngineModule",
+]
+from = "<%= settings.deployer %>"

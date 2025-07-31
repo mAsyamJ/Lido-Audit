@@ -1,0 +1,75 @@
+name: Publish
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+    inputs:
+      increment_major:
+        description: "Set to true to increment the version"
+        required: false
+        default: "false"
+
+jobs:
+  ABI:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up environment
+        uses: ./.github/setup
+
+      - name: Install Cannon
+        run: npm i -g @usecannon/cli
+
+      - name: Cannon build and inspect
+        run: |
+          cannon build script/cannon/local.toml
+          cannon inspect pike-local-market:0.1.0@main -w ./deployments/
+
+      - name: Extract ABIs
+        run: |
+          deployments_dir="./deployments"
+          output_dir="./temp-abi-package/consolidated"
+          mkdir -p "$output_dir"
+          for folder in "$deployments_dir"/*/; do
+              folder_name=$(basename "$folder")
+              proxy_json_path="${folder}Proxy.json"
+              [[ -f "$proxy_json_path" ]] && jq '.abi' "$proxy_json_path" > "${output_dir}/${folder_name}.json" || echo "Skipping $folder_name"
+          done
+
+      - name: Fetch and increment version
+        run: |
+          latest_version=$(npm show pike-local-market-abi version 2>/dev/null || echo "0.0.0")
+          IFS='.' read -r major minor patch <<< "$latest_version"
+          if [ "${{ github.event.inputs.increment_major }}" = "true" ]; then
+            new_version="$((major + 1)).0.0"
+          else
+            new_version="$major.$((minor + 1)).0"
+          fi
+          mkdir -p temp-abi-package
+          cat <<EOT > temp-abi-package/package.json
+          {
+            "name": "pike-local-market-abi",
+            "version": "$new_version",
+            "description": "ABI package for Pike Markets",
+            "main": "index.js",
+            "files": ["consolidated"],
+            "author": "NUTS Finance",
+            "license": "MIT",
+            "publishConfig": { "access": "public" }
+          }
+          EOT
+
+      - name: Set npm auth token
+        run: |
+          echo "registry=https://registry.npmjs.org/" >> ~/.npmrc
+          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" >> ~/.npmrc
+
+      - name: Publish ABI
+        run: npm publish
+        working-directory: ./temp-abi-package
+
+      - name: Cleanup
+        run: rm -rf ./temp-abi-package

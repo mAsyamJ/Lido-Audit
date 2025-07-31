@@ -1,0 +1,55 @@
+name: Generate UML Diagrams
+
+on:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  diagram:
+    name: Diagrams
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up environment
+        uses: ./.github/setup
+
+      - name: Install sol2uml
+        run: npm install -g sol2uml
+
+      - name: Remove existing diagrams
+        run: |
+          mkdir -p public/uml
+          rm -rf public/uml/*.svg
+
+      - name: Flatten contracts and generate UML
+        run: |
+          mkdir -p public/flatten
+          commit_hash="${{ github.sha }}"
+          short_commit_hash=$(echo $commit_hash | cut -c1-8)
+          find src/pike-market/modules -name "*.sol" | while read contract; do
+            contract_name=$(basename "$contract" .sol)
+            forge flatten "$contract" --output "public/flatten/$contract_name.flatten.sol"
+            sol2uml class "public/flatten/$contract_name.flatten.sol" -f svg -o "public/uml/${contract_name}_${short_commit_hash}.svg"
+          done
+          find src/oracles -maxdepth 1 -name "*.sol" | while read contract; do
+            contract_name=$(basename "$contract" .sol)
+            forge flatten "$contract" --output "public/flatten/$contract_name.flatten.sol"
+            sol2uml class "public/flatten/$contract_name.flatten.sol" -f svg -o "public/uml/${contract_name}_${short_commit_hash}.svg"
+          done
+
+      - name: Remove flattened contracts
+        run: rm -rf public/flatten
+
+      - uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "docs(public): add UML diagrams of modules and oracle contracts"
+          commit_options: "--no-verify"

@@ -1,0 +1,54 @@
+[contract.PythOracleProvider]
+artifact = "PythOracleProvider"
+args = [
+  "<%= settings.pythFeed %>",
+  "<%= settings.pythProvider_owner %>"
+]
+from = "<%= settings.deployer %>"
+depends = ['var.config', 'var.owner']
+
+
+[contract.ChainlinkOracleProvider]
+artifact = "ChainlinkOracleProvider"
+args = [
+  "<%= settings.chainlinkUptimeFeed %>",
+  "<%= settings.chainlinkProvider_owner %>"
+]
+from = "<%= settings.deployer %>"
+depends = ['var.config', 'var.owner']
+
+[contract.ChainlinkOracleComposite]
+artifact = "ChainlinkOracleComposite"
+args = [
+  "<%= settings.chainlinkUptimeFeed %>",
+  "<%= settings.chainlinkProvider_owner %>"
+]
+from = "<%= settings.deployer %>"
+depends = ['var.config', 'var.owner']
+
+[clone.pythProvider]
+source = "pike-upgradeable-proxy:0.1.0@oz"
+options.implementation = "<%= contracts.PythOracleProvider.address %>"
+options.initialCallData = "<%= encodeFunctionData({abi: contracts.PythOracleProvider.abi, functionName: 'initialize'}) %>"
+options.owner = "<%= settings.deployer %>"
+options.abi = "<%= JSON.stringify(contracts.PythOracleProvider.abi) %>"
+options.salt = "PythOracleProvider"
+depends = ['contract.PythOracleProvider']
+
+[clone.chainlinkProvider]
+source = "pike-upgradeable-proxy:0.1.0@oz"
+options.implementation = "<%= contracts.ChainlinkOracleProvider.address %>"
+options.initialCallData = "<%= encodeFunctionData({abi: contracts.ChainlinkOracleProvider.abi, functionName: 'initialize'}) %>"
+options.owner = "<%= settings.deployer %>"
+options.abi = "<%= JSON.stringify(contracts.ChainlinkOracleProvider.abi) %>"
+options.salt = "ChainlinkOracleProvider"
+depends = ['contract.ChainlinkOracleProvider']
+
+[clone.chainlinkComposite]
+source = "pike-upgradeable-proxy:0.1.0@oz"
+options.implementation = "<%= contracts.ChainlinkOracleComposite.address %>"
+options.initialCallData = "<%= encodeFunctionData({abi: contracts.ChainlinkOracleComposite.abi, functionName: 'initialize'}) %>"
+options.owner = "<%= settings.deployer %>"
+options.abi = "<%= JSON.stringify(contracts.ChainlinkOracleComposite.abi) %>"
+options.salt = "ChainlinkOracleComposite"
+depends = ['contract.ChainlinkOracleComposite']

@@ -1,0 +1,46 @@
+name = "pike-upgradeable-proxy"
+version = "0.1.0"
+preset = "main"
+description = "Universal Proxy using Pike UUPS contracts"
+
+[var.implementation]
+implementation = "<%= contracts.InitialModuleBundle.address %>"
+
+[var.salt]
+salt = "main"
+
+[var.owner]
+owner = "0x8da29648bd3bbef6f0cc1C0b3a9a286ED14E2963"
+
+[var.abi]
+abi = "<%= JSON.stringify(contracts.InitialModuleBundle.abi) %>"
+
+[var.initialCallData]
+initialCallData = "<%= encodeFunctionData({abi: contracts.InitialModuleBundle.abi, functionName: 'initialize', args: [settings.core_owner]}) %>"
+
+[deploy.InitialModuleBundle]
+artifact = "InitialModuleBundle"
+
+[deploy.InitialProxy]
+artifact = "ERC1967Proxy"
+args = [
+  "<%= contracts.InitialModuleBundle.address %>",
+  "<%= settings.initialCallData %>"
+]
+salt = "<%= settings.salt %>"
+create2 = true
+
+[invoke.upgrade_proxy_implementation]
+target = [ "InitialProxy" ]
+abi = "InitialModuleBundle"
+func = "upgradeTo"
+args = [ "<%= settings.implementation %>" ]
+
+  [invoke.upgrade_proxy_implementation.fromCall]
+  func = "owner"
+
+[invoke.upgrade_proxy_implementation.factory.Proxy]
+abi = "<%= settings.abi %>"
+event = "Upgraded"
+arg = 0
+highlight = true

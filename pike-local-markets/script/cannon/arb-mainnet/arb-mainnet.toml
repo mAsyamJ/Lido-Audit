@@ -1,0 +1,24 @@
+include = [
+    # global params 
+    # "../global.toml",
+
+    # core factory
+    "../core.toml",
+
+    # oracle provider
+    "./oracle-provider.toml",
+]
+
+[var.owner]
+core_owner = "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589"
+deployer = "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589"
+oracleEngine_owner = "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589"
+chainlinkProvider_owner = "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589"
+pythProvider_owner = "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589"
+usdc_owner = "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589"
+weth_owner = "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589"
+steth_owner = "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589"
+
+[var.config]
+pythFeed = "0xff1a0f4744e8582DF1aE09D5611b887B6a12925C"
+chainlinkUptimeFeed = "0xFdB631F5EE196F0ed6FAa767959853A9F217697D"

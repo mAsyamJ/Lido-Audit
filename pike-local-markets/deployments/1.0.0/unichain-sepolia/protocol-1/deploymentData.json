@@ -1,0 +1,13 @@
+{
+  "deploymentTimestamp": 1743073563,
+  "factoryAddress": "0x07db22cff1e251350f42d0E3b247226ed0814425",
+  "initialGovernor": "0x92Bc7D2305EC97E138a5c98F6f5FD69703fe0589",
+  "isDryRun": false,
+  "market-pusdc": "0x62631439dc5469c1836d58f99A523B2A5596c568",
+  "market-pweth": "0xc0Eab35d15DDA6d9329548305063aD459b806E44",
+  "market-pwsteth": "0xc7EAD26799a4F9dfdd32b18B3D154e27d68f7c5B",
+  "oracleEngine": "0xd576545d3EF444Ae00Be50b894694d6Bb084057d",
+  "protocolId": 1,
+  "riskEngine": "0xf9Ef249b7b3635e6c06A358eCA9714CDd72aDa67",
+  "timelock": "0xe6193EF183119CBE962b63589784aA81F750F239"
+}

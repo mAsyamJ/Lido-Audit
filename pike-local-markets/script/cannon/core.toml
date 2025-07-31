@@ -1,0 +1,49 @@
+include = [
+    # global implementation deployment 
+    "./global.toml",
+]
+
+[contract.Factory]
+artifact = "Factory"
+from = "<%= settings.deployer %>"
+
+[contract.reBeacon]
+artifact = "UpgradeableBeacon"
+args = [
+  "<%= contracts.RiskEngineRouter.address %>",
+  "<%= settings.core_owner %>"
+]
+from = "<%= settings.deployer %>"
+
+[contract.pTokenBeacon]
+artifact = "UpgradeableBeacon"
+args = [
+  "<%= contracts.PTokenRouter.address %>",
+  "<%= settings.core_owner %>"
+]
+from = "<%= settings.deployer %>"
+
+[contract.timelockBeacon]
+artifact = "UpgradeableBeacon"
+args = [
+  "<%= contracts.Timelock.address %>",
+  "<%= settings.core_owner %>"
+]
+from = "<%= settings.deployer %>"
+
+[contract.oracleEngineBeacon]
+artifact = "UpgradeableBeacon"
+args = [
+  "<%= contracts.OracleEngine.address %>",
+  "<%= settings.core_owner %>"
+]
+from = "<%= settings.deployer %>"
+
+[clone.factory]
+source = "pike-upgradeable-proxy:0.1.0@oz"
+options.implementation = "<%= contracts.Factory.address %>"
+options.initialCallData = "<%= encodeFunctionData({abi: contracts.Factory.abi, functionName: 'initialize', args: [settings.core_owner, contracts.reBeacon.address, contracts.oracleEngineBeacon.address, contracts.pTokenBeacon.address, contracts.timelockBeacon.address]}) %>"
+options.owner = "<%= settings.deployer %>"
+options.abi = "<%= JSON.stringify(contracts.Factory.abi) %>"
+options.salt = "Factory"
+depends = ['contract.Factory','contract.oracleEngineBeacon', 'contract.reBeacon', 'contract.pTokenBeacon', 'contract.timelockBeacon']
