@@ -17,25 +17,21 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Debug Solidity files
-        run: |
-          echo "Listing Solidity files in dual-governance/contracts..."
-          find dual-governance/contracts -name '*.sol'
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
-      - name: Run Solidity Metrics via Docker
+      - name: Get list of Solidity files
+        id: list-sol
         run: |
-          echo "Preparing to run solidity-metrics..."
-          FILES=$(find dual-governance/contracts -name '*.sol' | paste -sd " " -)
-          echo "Files: $FILES"
-          docker run --rm \
-            -v "$PWD:/data" \
-            tintinweb/solidity-metrics-action \
-            $FILES --out /data/metrics.html --verbose
+          echo "SOL_FILES=$(find dual-governance/contracts -name '*.sol' | paste -sd ' ' -)" >> $GITHUB_OUTPUT
 
-      - name: Preview generated metrics
-        run: |
-          echo "Preview of metrics.html:"
-          head -n 30 metrics.html || echo "❌ No metrics.html generated"
+      - name: Run Solidity Metrics
+        uses: tintinweb/solidity-metrics-action@v1
+        with:
+          target: ${{ steps.list-sol.outputs.SOL_FILES }}
+          args: --out /github/workspace/metrics.html --verbose
 
       - name: Upload metrics report
         uses: actions/upload-artifact@v4
