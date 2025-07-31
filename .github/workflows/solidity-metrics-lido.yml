@@ -15,26 +15,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: false
+          submodules: 'recursive'
 
-      - name: Setup Python (required by solidity-metrics)
+      - name: Setup Python (required by metrics action)
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Run Solidity Metrics
+      - name: Run Solidity Metrics only on dual-governance
         uses: tintinweb/solidity-metrics-action@v1
         with:
-          target: 'dual-governance/contracts/**/*.sol'
+          target: 'dual-governance/contracts'
           args: '--output metrics.html'
 
-      - name: Show Metrics Output
-        run: |
-          ls -lah
-          head -n 30 metrics.html || echo "No metrics.html generated"
+      - name: Check result
+        run: ls -lah && head -n 30 metrics.html || echo "No HTML generated"
 
-      - name: Upload Artifact
-        if: success()
+      - name: Upload metrics report
         uses: actions/upload-artifact@v4
         with:
           name: solidity-metrics-dual-governance
