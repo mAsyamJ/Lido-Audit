@@ -23,7 +23,7 @@ jobs:
       - name: Run Solidity Metrics on all contracts
         uses: tintinweb/solidity-metrics-action@v1
         with:
-          target: 'contracts/**/*.sol'
+          target: 'dual-governance/contracts/**/*.sol'
           args: '--output metrics.html'
 
       - name: Check result
