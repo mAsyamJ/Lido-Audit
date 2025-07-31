@@ -25,17 +25,15 @@ jobs:
       - name: Debug Solidity files
         run: find dual-governance/contracts -name '*.sol'
 
-      - name: Run Solidity Metrics
-        uses: tintinweb/solidity-metrics-action@v1
-        with:
-          target: dual-governance/contracts/**/*.sol
-          args: --out /github/workspace/metrics.html --verbose
+      - name: Run Solidity Metrics manually
+        run: |
+          pip install slither-analyzer
+          pip install git+https://github.com/tintinweb/solidity-metrics
+          python3 -m solidity_metrics.run --target dual-governance/contracts --out metrics.html
 
       - name: Check result
         run: |
-          echo "List of files in workspace:"
           ls -lah
-          echo "Preview of metrics.html:"
           head -n 30 metrics.html || echo "❌ No metrics.html generated"
 
       - name: Upload metrics report
