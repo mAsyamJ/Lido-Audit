@@ -15,7 +15,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: 'recursive'
+          submodules: false  # 🔧 Hapus fetch submodule
 
       - name: Setup Python (required by metrics action)
         uses: actions/setup-python@v4
