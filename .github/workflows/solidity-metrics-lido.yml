@@ -22,15 +22,10 @@ jobs:
         with:
           python-version: '3.x'
 
-      - name: Get list of Solidity files
-        id: list-sol
-        run: |
-          echo "SOL_FILES=$(find dual-governance/contracts -name '*.sol' | paste -sd ' ' -)" >> $GITHUB_OUTPUT
-
       - name: Run Solidity Metrics
         uses: tintinweb/solidity-metrics-action@v1
         with:
-          target: ${{ steps.list-sol.outputs.SOL_FILES }}
+          target: dual-governance/contracts
           args: --out /github/workspace/metrics.html --verbose
 
       - name: Upload metrics report
@@ -38,3 +33,5 @@ jobs:
         with:
           name: solidity-metrics-dual-governance
           path: metrics.html
+      - name: List Solidity files
+        run: find dual-governance/contracts -name '*.sol'
