@@ -15,24 +15,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          submodules: false  # 🔧 Hapus fetch submodule
+          submodules: false
 
-      - name: Setup Python (required by metrics action)
+      - name: Setup Python (required by solidity-metrics)
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
 
-      - name: Run Solidity Metrics only on dual-governance
+      - name: Run Solidity Metrics
         uses: tintinweb/solidity-metrics-action@v1
         with:
           target: 'dual-governance/contracts/**/*.sol'
-          args: '--output dual-governance/metrics.html'
+          args: '--output metrics.html'
 
-      - name: Check result
-        run: ls -lah dual-governance && head -n 30 dual-governance/metrics.html || echo "No HTML generated"
+      - name: Show Metrics Output
+        run: |
+          ls -lah
+          head -n 30 metrics.html || echo "No metrics.html generated"
 
-      - name: Upload metrics report
+      - name: Upload Artifact
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: solidity-metrics-dual-governance
-          path: dual-governance/metrics.html
+          path: metrics.html
