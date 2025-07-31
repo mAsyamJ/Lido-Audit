@@ -25,8 +25,8 @@ jobs:
       - name: Run Solidity Metrics only on dual-governance
         uses: tintinweb/solidity-metrics-action@v1
         with:
-          target: 'dual-governance/contracts'
-          args: '--output metrics.html'
+          target: dual-governance/contracts/**/*.sol
+          args: --output metrics.html
 
       - name: Check result
         run: ls -lah && head -n 30 metrics.html || echo "No HTML generated"
