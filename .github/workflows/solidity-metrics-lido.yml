@@ -22,11 +22,16 @@ jobs:
         with:
           python-version: '3.x'
 
+      - name: Debug file matching
+        run: |
+          echo "Matching Solidity files:"
+          find dual-governance/contracts -name '*.sol'
+
       - name: Run Solidity Metrics only on dual-governance
         uses: tintinweb/solidity-metrics-action@v1
         with:
           target: dual-governance/contracts/**/*.sol
-          args: --output metrics.html
+          args: --out metrics.html --verbose
 
       - name: Check result
         run: ls -lah && head -n 30 metrics.html || echo "No HTML generated"
