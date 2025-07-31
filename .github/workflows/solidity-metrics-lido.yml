@@ -28,8 +28,8 @@ jobs:
       - name: Run Solidity Metrics
         uses: tintinweb/solidity-metrics-action@v1
         with:
-          target: dual-governance/contracts
-          args: --out metrics.html --verbose
+          target: dual-governance/contracts/**/*.sol
+          args: --out /github/workspace/metrics.html --verbose
 
       - name: Check result
         run: |
