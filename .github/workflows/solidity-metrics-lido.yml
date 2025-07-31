@@ -17,24 +17,23 @@ jobs:
         with:
           submodules: recursive
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.x'
-
       - name: Debug Solidity files
-        run: find dual-governance/contracts -name '*.sol'
-
-      - name: Run Solidity Metrics
-        uses: tintinweb/solidity-metrics-action@v1
-        with:
-          target: dual-governance/contracts
-          args: --out metrics.html --verbose
-
-      - name: Check result
         run: |
-          echo "List of files in workspace:"
-          ls -lah
+          echo "Listing Solidity files in dual-governance/contracts..."
+          find dual-governance/contracts -name '*.sol'
+
+      - name: Run Solidity Metrics via Docker
+        run: |
+          echo "Preparing to run solidity-metrics..."
+          FILES=$(find dual-governance/contracts -name '*.sol' | paste -sd " " -)
+          echo "Files: $FILES"
+          docker run --rm \
+            -v "$PWD:/data" \
+            tintinweb/solidity-metrics-action \
+            $FILES --out /data/metrics.html --verbose
+
+      - name: Preview generated metrics
+        run: |
           echo "Preview of metrics.html:"
           head -n 30 metrics.html || echo "❌ No metrics.html generated"
 
@@ -43,6 +42,3 @@ jobs:
         with:
           name: solidity-metrics-dual-governance
           path: metrics.html
-      - name: Debug workspace
-        run: find . -type f
-
