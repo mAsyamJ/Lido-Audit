@@ -4,3 +4,12 @@
 [submodule "dual-governance-audit/lib/forge-std"]
 	path = dual-governance-audit/lib/forge-std
 	url = https://github.com/foundry-rs/forge-std
+[submodule "dual-governance-audit/lib/solmate"]
+	path = dual-governance-audit/lib/solmate
+	url = https://github.com/rari-capital/solmate
+[submodule "dual-governance-audit/lib/safe-contracts"]
+	path = dual-governance-audit/lib/safe-contracts
+	url = https://github.com/safe-global/safe-contracts
+[submodule "dual-governance-audit/lib/openzeppelin-contracts"]
+	path = dual-governance-audit/lib/openzeppelin-contracts
+	url = https://github.com/openzeppelin/openzeppelin-contracts
