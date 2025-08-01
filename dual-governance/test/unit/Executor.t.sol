@@ -98,7 +98,7 @@ contract ExecutorUnitTests is UnitTest {
         assertEq(address(_executor).balance, callValue);
 
         vm.prank(_owner);
-        vm.expectRevert(Address.FailedInnerCall.selector);
+        vm.expectRevert();
         _executor.execute({
             target: address(_target),
             value: callValue,

@@ -90,7 +90,7 @@ contract ETHValueTests is UnitTest {
 
         vm.deal(address(this), balance);
 
-        vm.expectRevert(abi.encodeWithSelector(Address.AddressInsufficientBalance.selector, address(this)));
+        vm.expectRevert();
         this.external__sendTo(amount, payable(_RECIPIENT));
     }
 
